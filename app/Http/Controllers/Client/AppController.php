@@ -50,6 +50,10 @@ class AppController extends Controller
                 array_push($proxy, Protocols\Clash::buildTrojan($user['uuid'], $item));
                 array_push($proxies, $item['name']);
             }
+            if ($item['type'] === 'hysteria') {
+                array_push($proxy, Protocols\Clash::buildHysteria($user['uuid'], $item));
+                array_push($proxies, $item['name']);
+            }
         }
 
         $config['proxies'] = array_merge($config['proxies'] ? $config['proxies'] : [], $proxy);
