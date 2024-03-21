@@ -53,6 +53,9 @@ class Surge
                 // [Proxy Group]
                 $proxyGroup .= $item['name'] . ', ';
             }
+            if ($item['type'] === 'hysteria') {
+                $uri .= self::buildHysteria($user['uuid'], $item);
+            }
         }
 
         $defaultConfig = base_path() . '/resources/rules/default.surge.conf';
@@ -156,6 +159,20 @@ class Surge
         }
         $config = array_filter($config);
         $uri = implode(',', $config);
+        $uri .= "\r\n";
+        return $uri;
+    }
+
+    public static function buildHysteria($password, $server)
+    {
+        $name = rawurlencode($server['name']);
+        $query = http_build_query([
+            'insecure' => $server['insecure'],
+            'peer' => $server['server_name'],
+            'obfs' => $server['server_key'],
+            'sni' => $server['server_name']
+        ]);
+        $uri = "hysteria2://{$password}@{$server['host']}:{$server['port']}?{$query}#{$name}";
         $uri .= "\r\n";
         return $uri;
     }

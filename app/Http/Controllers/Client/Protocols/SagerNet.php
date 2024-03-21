@@ -30,6 +30,9 @@ class SagerNet
             if ($item['type'] === 'trojan') {
                 $uri .= self::buildTrojan($user['uuid'], $item);
             }
+            if ($item['type'] === 'hysteria') {
+                $uri .= self::buildHysteria($user['uuid'], $item);
+            }
         }
         return base64_encode($uri);
     }
@@ -98,6 +101,19 @@ class SagerNet
             'sni' => $server['server_name']
         ]);
         $uri = "trojan://{$uuid}@{$server['host']}:{$server['port']}?{$query}#{$name}";
+        $uri .= "\r\n";
+        return $uri;
+    }
+
+    public static function buildHysteria($password, $server)
+    {
+        $name = rawurlencode($server['name']);
+        $query = http_build_query([
+            'insecure' => $server['insecure'],
+            'peer' => $server['server_name'],
+            'sni' => $server['server_name']
+        ]);
+        $uri = "hysteria2://{$password}@{$server['host']}:{$server['port']}?obfs=none{$query}#{$name}";
         $uri .= "\r\n";
         return $uri;
     }

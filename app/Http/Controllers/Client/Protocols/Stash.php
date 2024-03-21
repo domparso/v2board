@@ -55,6 +55,9 @@ class Stash
                 array_push($proxy, self::buildTrojan($user['uuid'], $item));
                 array_push($proxies, $item['name']);
             }
+            if ($item['type'] === 'hysteria') {
+                $uri .= self::buildHysteria($user['uuid'], $item);
+            }
         }
 
         $config['proxies'] = array_merge($config['proxies'] ? $config['proxies'] : [], $proxy);
@@ -183,5 +186,19 @@ class Stash
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    public static function buildHysteria($password, $server)
+    {
+        $name = rawurlencode($server['name']);
+        $query = http_build_query([
+            'insecure' => $server['insecure'],
+            'peer' => $server['server_name'],
+            'obfs' => $server['server_key'],
+            'sni' => $server['server_name']
+        ]);
+        $uri = "hysteria2://{$password}@{$server['host']}:{$server['port']}?{$query}#{$name}";
+        $uri .= "\r\n";
+        return $uri;
     }
 }

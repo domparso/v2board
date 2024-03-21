@@ -187,6 +187,7 @@ class Clash
         $array['port'] = $server['port'];
         $array['password'] = $password;
         $array['udp'] = true;
+        $array['obfs'] = $server['server_key'];
         if (!empty($server['server_name'])) $array['sni'] = $server['server_name'];
         if (!empty($server['insecure'])) $array['skip-cert-verify'] = ($server['insecure'] ? true : false);
         return $array;
