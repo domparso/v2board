@@ -53,6 +53,12 @@ class Surfboard
                 // [Proxy Group]
                 $proxyGroup .= $item['name'] . ', ';
             }
+            if ($item['type'] === 'hysteria') {
+                // [Proxy]
+                $proxies .= self::buildHysteria($user['uuid'], $item);
+                // [Proxy Group]
+                $proxyGroup .= $item['name'] . ', ';
+            }
         }
 
         $defaultConfig = base_path() . '/resources/rules/default.surfboard.conf';
@@ -155,6 +161,21 @@ class Surfboard
         }
         $config = array_filter($config);
         $uri = implode(',', $config);
+        $uri .= "\r\n";
+        return $uri;
+    }
+
+    public static function buildHysteria($password, $server)
+    {
+        $name = rawurlencode($server['name']);
+        $query = http_build_query([
+            'insecure' => $server['insecure'],
+            'peer' => $server['server_name'],
+            'obfs' => "salamander",
+            'obfs-password' => $server['server_key'],
+            'sni' => $server['server_name']
+        ]);
+        $uri = "hysteria2://{$password}@{$server['host']}:{$server['port']}?{$query}#{$name}";
         $uri .= "\r\n";
         return $uri;
     }

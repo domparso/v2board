@@ -120,6 +120,8 @@ class V2rayN
             'insecure' => $server['insecure'],
             'obfs' => $server['server_key'],
             'peer' => $server['server_name'],
+            'obfs' => "salamander",
+            'obfs-password' => $server['server_key'],
             'sni' => $server['server_name']
         ]);
 

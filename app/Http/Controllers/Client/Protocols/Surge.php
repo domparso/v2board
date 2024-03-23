@@ -169,7 +169,8 @@ class Surge
         $query = http_build_query([
             'insecure' => $server['insecure'],
             'peer' => $server['server_name'],
-            'obfs' => $server['server_key'],
+            'obfs' => "salamander",
+            'obfs-password' => $server['server_key'],
             'sni' => $server['server_name']
         ]);
         $uri = "hysteria2://{$password}@{$server['host']}:{$server['port']}?{$query}#{$name}";

@@ -111,9 +111,11 @@ class SagerNet
         $query = http_build_query([
             'insecure' => $server['insecure'],
             'peer' => $server['server_name'],
+            'obfs' => "salamander",
+            'obfs-password' => $server['server_key'],
             'sni' => $server['server_name']
         ]);
-        $uri = "hysteria2://{$password}@{$server['host']}:{$server['port']}?obfs=none{$query}#{$name}";
+        $uri = "hysteria2://{$password}@{$server['host']}:{$server['port']}?{$query}#{$name}";
         $uri .= "\r\n";
         return $uri;
     }
